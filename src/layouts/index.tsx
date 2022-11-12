@@ -1,8 +1,7 @@
-import { Link, Outlet } from 'umi';
-import styles from './index.less';
+import { Link, Outlet } from "umi";
+import styles from "./index.less";
 (window as any).CESIUM_BASE_URL = "/Cesium";
-import "../public/Cesium/Widgets/widgets.css";
-
+import "../../public/Cesium/Widgets/widgets.css";
 export default function Layout() {
   return (
     <div className={styles.navs}>
@@ -18,7 +17,7 @@ export default function Layout() {
         </li>
       </ul>
        */}
-       <Outlet />
+      <Outlet />
     </div>
   );
 }
