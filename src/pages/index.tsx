@@ -40,6 +40,34 @@ export default function HomePage() {
           negativeZ: "./texture/sky/nz.jpg",
         },
       }),
+      // 天地图矢量路径图
+      // imageryProvider: new Cesium.WebMapTileServiceImageryProvider({
+      //   url: "http://t0.tianditu.com/vec_w/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=vec&tileMatrixSet=w&TileMatrix={TileMatrix}&TileRow={TileRow}&TileCol={TileCol}&style=default&format=tiles&tk=30d07720fa76f07732d83c748bb84211",
+      //   layer: "tdtBasicLayer",
+      //   style: "default",
+      //   format: "image/jpeg",
+      //   tileMatrixSetID: "GoogleMapsCompatible",
+      // }),
+      //   天地图影像服务
+      imageryProvider: new Cesium.WebMapTileServiceImageryProvider({
+        url: "http://t0.tianditu.com/img_w/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=img&tileMatrixSet=w&TileMatrix={TileMatrix}&TileRow={TileRow}&TileCol={TileCol}&style=default&format=tiles&tk=30d07720fa76f07732d83c748bb84211",
+        layer: "tdtBasicLayer",
+        style: "default",
+        format: "image/jpeg",
+        tileMatrixSetID: "GoogleMapsCompatible",
+      }),
+      // OSM地图,
+      // imageryProvider: new Cesium.OpenStreetMapImageryProvider({
+      //   url: "https://a.tile.openstreetmap.org/",
+      // }),
+      // 高德矢量地图,
+      // imageryProvider: new Cesium.UrlTemplateImageryProvider({
+      //   url: "http://webrd02.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}",
+      //   layer: "tdtVecBasicLayer",
+      //   style: "default",
+      //   format: "image/png",
+      //   tileMatrixSetID: "GoogleMapsCompatible",
+      // }),
     });
     // 隐藏LOGO
     viewerRef.current.cesiumWidget.creditContainer.style.display = "none";
@@ -55,10 +83,19 @@ export default function HomePage() {
       61.2
     );
 
-    // Add Cesium OSM Buildings, a global 3D buildings layer.
-    const buildingTileset = viewerRef.current.scene.primitives.add(
-      Cesium.createOsmBuildings()
+    // 设置图层叠加
+    const imageryLayers = viewerRef.current.imageryLayers;
+    const layer = imageryLayers.addImageryProvider(
+      new Cesium.UrlTemplateImageryProvider({
+        url: "http://webrd02.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}",
+        layer: "tdtVecBasicLayer",
+        style: "default",
+        format: "image/png",
+        tileMatrixSetID: "GoogleMapsCompatible",
+      })
     );
+    // 地图叠加时需要设置图层透明度
+    layer.alpha = 0.6;
   }, []);
   return (
     <div
