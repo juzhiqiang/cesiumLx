@@ -24,7 +24,3 @@ export const Point = (Viewer: Cesium.Viewer) => {
   });
 };
 
-// 添加3d建筑
-export const osmBuildings = (viewer: Cesium.Viewer) => {
-  viewer.scene.primitives.add(Cesium.createOsmBuildings());
-};

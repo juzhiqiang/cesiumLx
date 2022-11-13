@@ -4,7 +4,7 @@ import styles from "./index.less";
 import { TOKEN } from "@/units/cesiumConfig";
 import { TerrainFn } from "./terrain";
 import { keyCodeHandle, setFlyTo, setViwer } from "./cesiumUnitl/carame";
-import { osmBuildings } from "./cesiumUnitl/point";
+import { addGltf, osmBuildings } from "./cesiumUnitl/model";
 
 export default function HomePage() {
   const cesiumContainer = useRef<any>();
@@ -103,13 +103,17 @@ export default function HomePage() {
 
     setFlyTo(viewerRef.current);
     keyCodeHandle(viewerRef.current);
-    osmBuildings(viewerRef.current)
+    osmBuildings(viewerRef.current);
+    addGltf(viewerRef.current);
   }, []);
   return (
-    <div
-      className={styles.cesiumContainer}
-      id="cesiumContainer"
-      ref={cesiumContainer}
-    ></div>
+    <>
+      <div
+        className={styles.cesiumContainer}
+        id="cesiumContainer"
+        ref={cesiumContainer}
+      ></div>
+      <div></div>
+    </>
   );
 }
