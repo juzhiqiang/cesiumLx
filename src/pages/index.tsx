@@ -3,6 +3,7 @@ import * as Cesium from "cesium";
 import styles from "./index.less";
 import { TOKEN } from "@/units/cesiumConfig";
 import { TerrainFn } from "./terrain";
+import { keyCodeHandle, setFlyTo, setViwer } from "./cesiumUnitl/carame";
 
 export default function HomePage() {
   const cesiumContainer = useRef<any>();
@@ -74,16 +75,16 @@ export default function HomePage() {
     // 隐藏LOGO
     viewerRef.current.cesiumWidget.creditContainer.style.display = "none";
     // 设置默认视角
-    Cesium.Camera.DEFAULT_VIEW_RECTANGLE = Cesium.Rectangle.fromDegrees(
-      // 西经
-      89.5,
-      // 南纬
-      20.4,
-      // 东经
-      110.4,
-      // 北纬
-      61.2
-    );
+    // Cesium.Camera.DEFAULT_VIEW_RECTANGLE = Cesium.Rectangle.fromDegrees(
+    //   // 西经
+    //   89.5,
+    //   // 南纬
+    //   20.4,
+    //   // 东经
+    //   110.4,
+    //   // 北纬
+    //   61.2
+    // );
 
     // 设置图层叠加
     const imageryLayers = viewerRef.current.imageryLayers;
@@ -99,7 +100,8 @@ export default function HomePage() {
     // 地图叠加时需要设置图层透明度
     layer.alpha = 0.6;
 
-
+    setFlyTo(viewerRef.current);
+    keyCodeHandle(viewerRef.current);
   }, []);
   return (
     <div
