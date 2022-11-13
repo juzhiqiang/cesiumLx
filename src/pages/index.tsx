@@ -98,6 +98,8 @@ export default function HomePage() {
     );
     // 地图叠加时需要设置图层透明度
     layer.alpha = 0.6;
+
+
   }, []);
   return (
     <div
