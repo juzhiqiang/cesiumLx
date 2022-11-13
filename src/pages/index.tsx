@@ -4,6 +4,7 @@ import styles from "./index.less";
 import { TOKEN } from "@/units/cesiumConfig";
 import { TerrainFn } from "./terrain";
 import { keyCodeHandle, setFlyTo, setViwer } from "./cesiumUnitl/carame";
+import { osmBuildings } from "./cesiumUnitl/point";
 
 export default function HomePage() {
   const cesiumContainer = useRef<any>();
@@ -102,6 +103,7 @@ export default function HomePage() {
 
     setFlyTo(viewerRef.current);
     keyCodeHandle(viewerRef.current);
+    osmBuildings(viewerRef.current)
   }, []);
   return (
     <div
