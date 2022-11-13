@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import * as Cesium from "cesium";
 import styles from "./index.less";
 import { TOKEN } from "@/units/cesiumConfig";
+import { TerrainFn } from "./terrain";
 
 export default function HomePage() {
   const cesiumContainer = useRef<any>();
@@ -12,7 +13,8 @@ export default function HomePage() {
     // 创建实例
     viewerRef.current = new Cesium.Viewer("cesiumContainer", {
       // cesium 控制器
-      terrainProvider: Cesium.createWorldTerrain(),
+      terrainProvider: TerrainFn(),
+
       // 查询框，可搜索地理信息位置
       geocoder: false,
       // 是否可以控回到初始状态
