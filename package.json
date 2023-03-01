@@ -2,6 +2,8 @@
   "name": "vue-project",
   "version": "0.0.0",
   "private": true,
+  "homepage": "http://cesium.com/cesiumjs/",
+  "license": "Apache-2.0",
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check build-only",

@@ -1,85 +1,53 @@
-<script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+  <div id="cesiumContainer" ref="cesiumContainer"></div>
 </template>
 
+<script setup lang="ts">
+import { onMounted, ref } from "vue";
+import * as Cesium from "cesium";
+import "./Widgets/widgets.css";
+// 设置默认资源位置
+window.CESIUM_BASE_URL = "/";
+
+onMounted(() => {
+  // 初始化窗口
+  const viewer: any = new Cesium.Viewer("cesiumContainer", {
+    // 是否显示信息框
+    infoBox: false,
+    // 搜索
+    geocoder: false,
+    // 显示home
+    homeButton: false,
+    // 场景模式选择2的，3d
+    sceneModePicker: false,
+    // 设置图层选择器
+    baseLayerPicker: false,
+    // 帮助按钮
+    navigationHelpButton: false,
+    // 时间动画
+    animation: false,
+    // 时间轴
+    timeline: false,
+  });
+  // 隐藏logo
+  viewer.cesiumWidget.creditContainer.style.display = "none";
+  // 设置默认视角
+  Cesium.Camera.DEFAULT_VIEW_RECTANGLE = Cesium.Rectangle.fromDegrees(
+    // 西边经度
+    85.9,
+    // 南部维度
+    20.4,
+    // 东边经度
+    110.4,
+    // 北部维度
+    61.2
+  );
+});
+</script>
+
 <style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+#cesiumContainer {
+  width: 100vw;
+  height: 100vh;
 }
 </style>
