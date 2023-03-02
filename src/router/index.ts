@@ -24,9 +24,13 @@ const router = createRouter({
       path: '/CameraSite',
       name: 'CameraSite',
       component: () => import('../views/CameraSite.vue')
+    }, {
+      path: '/3dTiles',
+      name: '3dTiles',
+      component: () => import('../views/3dTiles.vue')
     }
 
-
+    
   ]
 })
 
