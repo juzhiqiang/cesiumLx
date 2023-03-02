@@ -12,7 +12,17 @@ const router = createRouter({
       path: '/CustomMapLayer',
       name: 'CustomMapLayer',
       component: () => import('../views/CustomMapLayer.vue')
+    }, {
+      path: '/Terrain',
+      name: 'Terrain',
+      component: () => import('../views/Terrain.vue')
+    }, {
+      path: '/CoordinateTransformation',
+      name: 'CoordinateTransformation',
+      component: () => import('../views/CoordinateTransformation.vue')
     }
+
+
   ]
 })
 
