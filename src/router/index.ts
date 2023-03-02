@@ -20,6 +20,10 @@ const router = createRouter({
       path: '/CoordinateTransformation',
       name: 'CoordinateTransformation',
       component: () => import('../views/CoordinateTransformation.vue')
+    }, {
+      path: '/CameraSite',
+      name: 'CameraSite',
+      component: () => import('../views/CameraSite.vue')
     }
 
 
