@@ -28,9 +28,13 @@ const router = createRouter({
       path: '/3dTiles',
       name: '3dTiles',
       component: () => import('../views/3dTiles.vue')
+    }, {
+      path: '/Primitive',
+      name: 'Primitive',
+      component: () => import('../views/Primitive.vue')
     }
 
-    
+
   ]
 })
 
