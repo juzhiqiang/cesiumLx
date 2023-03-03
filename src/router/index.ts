@@ -32,6 +32,10 @@ const router = createRouter({
       path: '/Primitive',
       name: 'Primitive',
       component: () => import('../views/Primitive.vue')
+    }, {
+      path: '/PrimitiveMutual',
+      name: 'PrimitiveMutual',
+      component: () => import('../views/PrimitiveMutual.vue')
     }
 
 
