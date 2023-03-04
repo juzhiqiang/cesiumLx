@@ -14,6 +14,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import * as Cesium from "cesium";
+import gsap from "gsap";
 import "../Widgets/widgets.css";
 // 设置默认资源位置
 window.CESIUM_BASE_URL = "/";
@@ -50,74 +51,45 @@ onMounted(() => {
   });
   // 隐藏logo
   viewer.cesiumWidget.creditContainer.style.display = "none";
-
-  const materialType = {
-    // 纯色
-    colorMaterial: new Cesium.ColorMaterialProperty(
-      new Cesium.Color(1, 1, 0, 1)
-    ),
-    // 格纹
-    gwMaterial: new Cesium.CheckerboardMaterialProperty({
-      evenColor: Cesium.Color.GREEN,
-      oddColor: Cesium.Color.WHITE,
-      repeat: new Cesium.Cartesian2(2, 4),
+  // 自定义着色器
+  const shaders = {
+    material1: new Cesium.Material({
+      fabric: {
+        type: "Color",
+        // 材质对象
+        uniforms: {
+          color: new Cesium.Color(1.0, 0.0, 1.0, 0.5),
+        },
+      },
     }),
-    // 虚线材质
-    line: new Cesium.PolylineDashMaterialProperty({
-      dashLength: 16,
-      color: Cesium.Color.GREEN,
-    }),
-    // 箭头材质
-    jtLine: new Cesium.PolylineArrowMaterialProperty(Cesium.Color.RED),
-    // 发光
-    runLine: new Cesium.PolylineGlowMaterialProperty({
-      // 发光程度
-      glowPower: 1,
-      // 尾锥缩小程度
-      taperPower: 0.5,
-      color: Cesium.Color.RED,
-    }),
-  };
-
-  // entity 添加几何体
-  const rectangle = viewer.entities.add({
-    id: "entity",
-    rectangle: {
-      coordinates: Cesium.Rectangle.fromDegrees(90, 20, 110, 30),
-      // 设置实体材质
-      material: materialType.gwMaterial,
-    },
-  });
-
-  // entitly折线
-  const redLine = viewer.entities.add({
-    id: "zx",
-    polyline: {
-      positions: Cesium.Cartesian3.fromDegreesArray([-75, 35, -125, 35]),
-      width: 5,
-      material: materialType.runLine,
-    },
-  });
-
-  // primitive 设置外观
-  const primitiveAPPerance = {
-    // 使用instance实例的颜色去着色,
-    appearance: new Cesium.PerInstanceColorAppearance({
-      flat: false,
-    }),
-    // 自定义材质，会自动假定与地球表面平行，可以在计算大量顶点属性时候节省内存
-    custom: new Cesium.EllipsoidSurfaceAppearance({
-      material: Cesium.Material.fromType("Color", {
-        color: Cesium.Color.AQUA.withAlpha(0.8),
-      }),
-    }),
-    // 基类
-    baseCls: new Cesium.MaterialAppearance({
-      material: Cesium.Material.fromType("Color", {
-        color: Cesium.Color.AQUA.withAlpha(0.8),
-      }),
+    material2: new Cesium.Material({
+      fabric: {
+        uniforms: {
+          uTime: 0,
+        },
+        // 自定义材质资源
+        source: `
+        czm_material czm_getMaterial(czm_materialInput materialInput)
+        {
+          // 获取默认的基础材质
+          czm_material material = czm_getDefaultMaterial(materialInput);
+          // 设置材质漫反射颜色
+          // material.diffuse = vec3(materialInput.st,1.0);
+          // 设置条纹
+          float strength = mod(materialInput.st.x-uTime * 10.0, 1.0);
+          material.diffuse = vec3(strength,0.0,0.0);
+          return  material;
+        }
+        `,
+      },
     }),
   };
+  gsap.to(shaders.material2.uniforms, {
+    uTime: .1,
+    duration: 2,
+    repeat: -1,
+    ease: "linear",
+  });
   // 添加几何体
   const rectGeometry = new Cesium.RectangleGeometry({
     rectangle: Cesium.Rectangle.fromDegrees(115, 20, 135, 30),
@@ -127,7 +99,6 @@ onMounted(() => {
 
   // 几何体实例
   const rectang = new Cesium.GeometryInstance({
-    id: "red",
     geometry: rectGeometry,
     attributes: {
       color: Cesium.ColorGeometryInstanceAttribute.fromColor(
@@ -136,33 +107,20 @@ onMounted(() => {
     },
   });
 
+  // 设置外观
+  const appearance = new Cesium.EllipsoidSurfaceAppearance({
+    material: shaders.material2,
+  });
   // 创建几何体图元
   const primitive = new Cesium.Primitive({
     // 两个开始使用数组，一致直接使用单实例
     geometryInstances: [rectang],
-    appearance: primitiveAPPerance.custom,
+    appearance: appearance,
   });
   viewer.scene.primitives.add(primitive);
   viewer.camera.setView({
     destination: Cesium.Rectangle.fromDegrees(115, 20, 135, 30),
   });
-
-  // 拾取
-  const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
-  handler.setInputAction((movement: { position: Cesium.Cartesian2 }) => {
-    console.log("屏幕坐标", movement);
-    // 选中物体
-    const pickedObject = viewer.scene.pick(movement.position);
-    if (Cesium.defined(pickedObject)) {
-      console.log(pickedObject.id);
-      let getAttr = primitive.getGeometryInstanceAttributes(pickedObject.id);
-      getAttr.color = Cesium.ColorGeometryInstanceAttribute.toValue(
-        Cesium.Color.fromRandom({
-          alpha: 0.5,
-        })
-      );
-    }
-  }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 });
 </script>
 

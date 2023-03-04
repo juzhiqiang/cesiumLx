@@ -40,6 +40,10 @@ const router = createRouter({
       path: '/Material',
       name: 'Material',
       component: () => import('../views/Material.vue')
+    }, {
+      path: '/Shaders',
+      name: 'Shaders',
+      component: () => import('../views/Shaders.vue')
     }
 
 

@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "cesium": "^1.102.0",
+    "gsap": "^3.11.4",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6"
   },
