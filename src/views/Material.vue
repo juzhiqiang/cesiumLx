@@ -1,5 +1,6 @@
 <template>
   <div id="cesiumContainer" ref="cesiumContainer"></div>
+
 </template>
 
 <script setup lang="ts">
@@ -42,17 +43,80 @@ onMounted(() => {
   // 隐藏logo
   viewer.cesiumWidget.creditContainer.style.display = "none";
 
+  const materialType = {
+    // 纯色
+    colorMaterial: new Cesium.ColorMaterialProperty(
+      new Cesium.Color(1, 1, 0, 1)
+    ),
+    // 格纹
+    gwMaterial: new Cesium.CheckerboardMaterialProperty({
+      evenColor: Cesium.Color.GREEN,
+      oddColor: Cesium.Color.WHITE,
+      repeat: new Cesium.Cartesian2(2, 4),
+    }),
+    // 虚线材质
+    line: new Cesium.PolylineDashMaterialProperty({
+      dashLength: 16,
+      color: Cesium.Color.GREEN,
+    }),
+    // 箭头材质
+    jtLine: new Cesium.PolylineArrowMaterialProperty(Cesium.Color.RED),
+    // 发光
+    runLine: new Cesium.PolylineGlowMaterialProperty({
+      // 发光程度
+      glowPower: 1,
+      // 尾锥缩小程度
+      taperPower: 0.5,
+      color: Cesium.Color.RED,
+    }),
+  };
+
+  // entity 添加几何体
+  const rectangle = viewer.entities.add({
+    id: "entity",
+    rectangle: {
+      coordinates: Cesium.Rectangle.fromDegrees(90, 20, 110, 30),
+      // 设置实体材质
+      material: materialType.gwMaterial,
+    },
+  });
+
+  // entitly折线
+  const redLine = viewer.entities.add({
+    id: "zx",
+    polyline: {
+      positions: Cesium.Cartesian3.fromDegreesArray([-75, 35, -125, 35]),
+      width: 5,
+      material: materialType.runLine,
+    },
+  });
+
+  // primitive 设置外观
+  const primitiveAPPerance = {
+    // 使用instance实例的颜色去着色,
+    appearance: new Cesium.PerInstanceColorAppearance({
+      flat: false,
+    }),
+    // 自定义材质，会自动假定与地球表面平行，可以在计算大量顶点属性时候节省内存
+    custom: new Cesium.EllipsoidSurfaceAppearance({
+      material: Cesium.Material.fromType("Color", {
+        color: Cesium.Color.AQUA.withAlpha(0.8),
+      }),
+    }),
+    // 基类
+    baseCls: new Cesium.MaterialAppearance({
+      material: Cesium.Material.fromType("Color", {
+        color: Cesium.Color.AQUA.withAlpha(0.8),
+      }),
+    }),
+  };
   // 添加几何体
   const rectGeometry = new Cesium.RectangleGeometry({
     rectangle: Cesium.Rectangle.fromDegrees(115, 20, 135, 30),
     height: 0,
     vertexFormat: Cesium.PerInstanceColorAppearance.VERTEX_FORMAT,
   });
-  const rectGeometry1 = new Cesium.RectangleGeometry({
-    rectangle: Cesium.Rectangle.fromDegrees(90, 20, 110, 30),
-    height: 0,
-    vertexFormat: Cesium.PerInstanceColorAppearance.VERTEX_FORMAT,
-  });
+
   // 几何体实例
   const rectang = new Cesium.GeometryInstance({
     id: "red",
@@ -63,24 +127,12 @@ onMounted(() => {
       ),
     },
   });
-  const rectang1 = new Cesium.GeometryInstance({
-    id: "blue",
-    geometry: rectGeometry1,
-    attributes: {
-      color: Cesium.ColorGeometryInstanceAttribute.fromColor(
-        Cesium.Color.BLUE.withAlpha(0.5)
-      ),
-    },
-  });
-  // 设置外观
-  const appearance = new Cesium.PerInstanceColorAppearance({
-    flat: false,
-  });
+
   // 创建几何体图元
   const primitive = new Cesium.Primitive({
     // 两个开始使用数组，一致直接使用单实例
-    geometryInstances: [rectang, rectang1],
-    appearance: appearance,
+    geometryInstances: [rectang],
+    appearance: primitiveAPPerance.custom,
   });
   viewer.scene.primitives.add(primitive);
   viewer.camera.setView({

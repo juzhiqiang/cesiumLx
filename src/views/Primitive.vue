@@ -1,14 +1,6 @@
 <template>
   <div id="cesiumContainer" ref="cesiumContainer"></div>
 
-  <div class="btn-group">
-    <div class="btn" @click="setView(viewer, postion)">指定视角{{}}</div>
-    <div class="btn" @click="flyView(viewer, postion)">飞行前往指定视角</div>
-    <div class="btn" @click="fwFn('w')">上</div>
-    <div class="btn" @click="fwFn('s')">下</div>
-    <div class="btn" @click="fwFn('a')">左</div>
-    <div class="btn" @click="fwFn('d')">右</div>
-  </div>
 </template>
 
 <script setup lang="ts">
