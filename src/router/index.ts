@@ -48,8 +48,12 @@ const router = createRouter({
       path: '/EntityShaders',
       name: 'EntityShaders',
       component: () => import('../views/EntityShaders.vue')
+    }, {
+      path: '/AddGeojson',
+      name: 'AddGeojson',
+      component: () => import('../views/AddGeojson.vue')
     }
-    
+
 
   ]
 })
