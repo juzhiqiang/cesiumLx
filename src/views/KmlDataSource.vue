@@ -47,34 +47,15 @@ onMounted(() => {
   // 隐藏logo
   viewer.cesiumWidget.creditContainer.style.display = "none";
 
-  // 加载geojson
-  const dataGeojson = Cesium.GeoJsonDataSource.load(
-    "https://geo.datav.aliyun.com/areas_v2/bound/geojson?code=100000_full",
-    {
-      //轮廓线颜色设置
-      stroke: Cesium.Color.SKYBLUE.withAlpha(0.8),
-      // 填充颜色
-      fill: Cesium.Color.RED.withAlpha(0.5),
-      // 边框宽度【实际在web端无效，可采用划线实现】
-      strokeWidth: 4,
-    }
-  );
-  dataGeojson.then((dataGeojson) => {
-    let gz = viewer.dataSources.add(dataGeojson);
-    let entities = dataGeojson.entities.values;
-    entities.forEach((entity: any, i) => {
-      // 随机颜色
-      entity.polygon.material = new Cesium.ColorMaterialProperty(
-        Cesium.Color.fromRandom({
-          alpha: 1,
-        })
-      );
-      entity.polygon.outline = false;
-      // 随机深每个区块的拉伸高度
-      let randomNum = parseInt(String(Math.random() * 100000));
-      entity.polygon.extrudedHeight = randomNum;
-    });
-    console.log(dataGeojson);
+  // 加载kml数据
+  // 全球科研所 
+  let kmlUrl = "./Assets/facilities.kml";
+  // 各个国家Gdp情况
+  let kmlUrl1 = "./Assets/gdpPerCapita2008.kmz";
+  let kmlDataPromise = Cesium.KmlDataSource.load(kmlUrl1);
+  kmlDataPromise.then((dataSocurce) => {
+    console.log(dataSocurce);
+    viewer.dataSources.add(dataSocurce);
   });
 });
 </script>

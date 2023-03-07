@@ -52,8 +52,16 @@ const router = createRouter({
       path: '/AddGeojson',
       name: 'AddGeojson',
       component: () => import('../views/AddGeojson.vue')
+    }, {
+      path: '/KmlDataSource',
+      name: 'KmlDataSource',
+      component: () => import('../views/KmlDataSource.vue')
     }
-
+    , {
+      path: '/CzmlData',
+      name: 'CzmlData',
+      component: () => import('../views/CzmlData.vue')
+    }
 
   ]
 })
