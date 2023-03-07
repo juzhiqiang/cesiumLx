@@ -1,14 +1,5 @@
 <template>
   <div id="cesiumContainer" ref="cesiumContainer"></div>
-
-  <div class="btn-group">
-    <div class="btn" @click="setView(viewer, postion)">指定视角{{}}</div>
-    <div class="btn" @click="flyView(viewer, postion)">飞行前往指定视角</div>
-    <div class="btn" @click="fwFn('w')">上</div>
-    <div class="btn" @click="fwFn('s')">下</div>
-    <div class="btn" @click="fwFn('a')">左</div>
-    <div class="btn" @click="fwFn('d')">右</div>
-  </div>
 </template>
 
 <script setup lang="ts">
@@ -85,7 +76,7 @@ onMounted(() => {
     }),
   };
   gsap.to(shaders.material2.uniforms, {
-    uTime: .1,
+    uTime: 0.1,
     duration: 2,
     repeat: -1,
     ease: "linear",
@@ -110,12 +101,25 @@ onMounted(() => {
   // 设置外观
   const appearance = new Cesium.EllipsoidSurfaceAppearance({
     material: shaders.material2,
+    aboveGround: false,
+    translucent: true,
+    // 着色器
+    // fragmentShaderSource:`
+    //     varying vec3 v_positionMC;
+    //     varying vec3 v_positionEC;
+    //     varying vec2 v_st;
+    //     void main(){
+    //       czm_materialInput materialInput;
+    //       gl_FragColor = vec4(v_st,1.0,1.0);
+    //     }
+    // `
   });
   // 创建几何体图元
   const primitive = new Cesium.Primitive({
     // 两个开始使用数组，一致直接使用单实例
-    geometryInstances: [rectang],
+    geometryInstances: rectang,
     appearance: appearance,
+    show: true,
   });
   viewer.scene.primitives.add(primitive);
   viewer.camera.setView({

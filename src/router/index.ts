@@ -44,8 +44,12 @@ const router = createRouter({
       path: '/Shaders',
       name: 'Shaders',
       component: () => import('../views/Shaders.vue')
+    }, {
+      path: '/EntityShaders',
+      name: 'EntityShaders',
+      component: () => import('../views/EntityShaders.vue')
     }
-
+    
 
   ]
 })
