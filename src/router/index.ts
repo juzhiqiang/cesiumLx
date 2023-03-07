@@ -61,6 +61,10 @@ const router = createRouter({
       path: '/CzmlData',
       name: 'CzmlData',
       component: () => import('../views/CzmlData.vue')
+    }, {
+      path: '/FlyLine',
+      name: 'FlyLine',
+      component: () => import('../views/FlyLine.vue')
     }
 
   ]
