@@ -69,6 +69,10 @@ const router = createRouter({
       path: '/3dTitlesXnJK',
       name: '3dTitlesXnJK',
       component: () => import('../views/3dTitlesXnJK.vue')
+    }, {
+      path: '/3dTitlesAddStyle',
+      name: '3dTitlesAddStyle',
+      component: () => import('../views/3dTitlesAddStyle.vue')
     }
     
   ]
