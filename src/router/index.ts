@@ -65,8 +65,12 @@ const router = createRouter({
       path: '/FlyLine',
       name: 'FlyLine',
       component: () => import('../views/FlyLine.vue')
+    }, {
+      path: '/3dTitlesXnJK',
+      name: '3dTitlesXnJK',
+      component: () => import('../views/3dTitlesXnJK.vue')
     }
-
+    
   ]
 })
 
