@@ -5,6 +5,11 @@ const router = createRouter({
   routes: [
     {
       path: '/',
+      name: 'project',
+      component: () => import('../views/project.vue')
+    },
+    {
+      path: '/baseCesium',
       name: 'baseCesium',
       component: () => import('../views/BaseCesium.vue')
     },
