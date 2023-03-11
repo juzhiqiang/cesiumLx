@@ -14,6 +14,7 @@ import { navigationConfig } from "@/config/navigation";
 import { motifyMap } from "@/cesium/MotifyMap";
 import { motifyBuding } from "@/cesium/motifyBuding";
 import { LightCone } from "@/cesium/LightCone";
+import { RectFlyLight } from "@/cesium/RectFlyLight";
 Cesium.Ion.defaultAccessToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI0MTBjOTQzNC03NGU5LTQ2NzktYmUyZi01MTU0ZDhlOTA0NDEiLCJpZCI6OTYzMTEsImlhdCI6MTY1NDM5NzI2NX0.hwxYzN1S5cS8PSe3n_GZX4SzLdix1p1oqDl0_muro1o";
 
@@ -26,7 +27,10 @@ onMounted(() => {
   let navigation = new CesiumNavigaion(viewer, navigationConfig);
   motifyMap(viewer);
   motifyBuding(viewer);
+  // 动态光锥
   new LightCone(viewer, Cesium.Cartesian3.fromDegrees(113.3191, 23.109, 2000));
+  // 上升区域飞线
+  new RectFlyLight(viewer);
 });
 </script>
 

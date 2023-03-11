@@ -12,6 +12,7 @@
     "type-check": "vue-tsc --noEmit"
   },
   "dependencies": {
+    "@turf/turf": "^6.5.0",
     "cesium": "1.103.0",
     "gsap": "^3.11.4",
     "vue": "^3.2.47",
