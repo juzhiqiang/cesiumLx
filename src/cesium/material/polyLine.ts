@@ -1,20 +1,26 @@
 import * as Cesium from "cesium";
 import gsap from "gsap";
+// 设置静态值，多次使用防止修改到之前的颜色
 let typeNum = 0;
 export default class PolylineTrailMaterialProperty {
     definitionChanged: any;
     params: { uTime: number; };
-    name: any;
-    constructor(name) {
-        this.name = name;
+    color: Cesium.Color;
+    num: number;
+    constructor(color = new Cesium.Color(0.7, 0.6, 1.0, 1.0)) {
+        this.color = color;
+        this.num = typeNum;
+        typeNum++;
         this.definitionChanged = new Cesium.Event();
         (Cesium.Material as any)._materialCache.addMaterial(
-            "PolylineTrailMaterial",
+            "PolylineTrailMaterial" + this.num,
             {
                 fabric: {
-                    type: 'PolylineTrailMaterial',
+                    type: 'PolylineTrailMaterial' + this.num,
                     uniforms: {
-                        uTime: 0
+                        uTime: 0,
+                        // 可外部控制颜色
+                        color: this.color
                     },
                     source: `
                         czm_material czm_getMaterial(czm_materialInput materialInput)
@@ -32,7 +38,7 @@ export default class PolylineTrailMaterialProperty {
                             alpha += 0.1;
                             // 设置材质透明度
                             material.alpha = alpha;
-                            material.diffuse = vec3(0.7,0.6,1.0);
+                            material.diffuse = color.rgb;
                             return material;
                         }
                     `
@@ -53,7 +59,7 @@ export default class PolylineTrailMaterialProperty {
     }
     getType() {
         // 返回材质类型
-        return "PolylineTrailMaterial";
+        return "PolylineTrailMaterial" + this.num;
     }
     getValue(time: any, result: any) {
         result.uTime = this.params.uTime;
@@ -64,7 +70,7 @@ export default class PolylineTrailMaterialProperty {
         // 判断两个材质是否相等
         return (
             other instanceof PolylineTrailMaterialProperty &&
-            this.name === other.name
+            this.color === other.color
         );
     }
 }
